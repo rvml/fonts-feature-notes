@@ -11,24 +11,17 @@ import { WranglerConfig } from "~/components";
 This means Workers can now open TCP sockets to any private service reachable through the bound Cloudflare Tunnel, Cloudflare Mesh, or Cloudflare WAN on-ramp — Redis, Memcached, MQTT, custom binary protocols, or any other TCP-based service.
 
 <WranglerConfig>
-```jsonc
-{
-	"vpc_networks": [
-		{
-			"binding": "PRIVATE_NETWORK",
-			"network_id": "cf1:network",
-			"remote": true,
-		},
-	],
-}
+```toml
+[[vpc_networks]]
+binding = "PRIVATE_NETWORK"
+network_id = "cf1:network"
+remote = true
 ```
 </WranglerConfig>
 
 At runtime, use `connect()` on the binding to open a TCP socket to a private destination:
 
 ```ts
-import { connect } from "cloudflare:sockets";
-
 export default {
 	async fetch(request: Request, env: Env) {
 		// Open a TCP connection to a private Redis instance
